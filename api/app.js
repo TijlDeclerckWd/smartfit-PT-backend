@@ -1,15 +1,22 @@
 let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
+let cors = require('cors');
 let cookieParser = require('cookie-parser');
 
 
-
-let userRoute = require('./routes/user');
+const {
+    authRoutes,
+    userRoutes
+} = require('./routes');
 
 let app = express();
 
+// Open Mongoose connection to db
+require('../db');
 
+// cors middleware for orign and Headers
+app.use(cors());
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,14 +31,13 @@ res.setHeader(
 next();
 });
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/user', userRoute);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 
 // catch 404 and forward to error handler
