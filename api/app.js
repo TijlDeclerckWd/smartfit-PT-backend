@@ -3,14 +3,21 @@ let express = require('express');
 let path = require('path');
 let cors = require('cors');
 let cookieParser = require('cookie-parser');
+let devEnv = require('../development.config');
 
 
 const {
     authRoutes,
-    userRoutes
+    userRoutes,
+    clientRoutes
 } = require('./routes');
 
 let app = express();
+
+// Load 'development' configs for dev environment
+if (process.env.NODE_ENV !== 'production') {
+    devEnv.init();
+}
 
 // Open Mongoose connection to db
 require('../db');
@@ -38,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/client', clientRoutes);
 
 
 // catch 404 and forward to error handler

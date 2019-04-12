@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const { Schema } = mongoose;
 
-const TraineeSchema = new Schema({
+const ClientSchema = new Schema({
     active: {
         type: Boolean,
         required: true,
@@ -51,6 +51,6 @@ const TraineeSchema = new Schema({
     }
 });
 
-const Trainee = mongoose.model('Trainee', TraineeSchema);
+const Client = mongoose.model('Client', ClientSchema);
 
-module.exports = Trainee;
+module.exports = Client;

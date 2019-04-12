@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const { Schema } = mongoose;
 
@@ -8,15 +9,15 @@ const TrainerSchema = new Schema({
         required: true,
         default: true
     },
-    first_name: {
+    firstName: {
         type: String,
         required: true
     },
-    last_name: {
+    lastName: {
         type: String,
         required: true
     },
-    full_name: {
+    fullName: {
         type: String,
         required: true,
         lowercase: true

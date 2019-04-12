@@ -1,5 +1,7 @@
-const Trainee = require('./trainee.model');
+const Client = require('./client.model');
+const Trainer = require('./trainer.model');
 
 module.exports = {
-   Trainee
+   Client,
+    Trainer
 };
