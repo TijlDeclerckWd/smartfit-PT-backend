@@ -9,6 +9,11 @@ const TrainerSchema = new Schema({
         required: true,
         default: true
     },
+    type: {
+      type: String,
+      required: true,
+      default: 'trainer'
+    },
     firstName: {
         type: String,
         required: true
@@ -42,12 +47,15 @@ const TrainerSchema = new Schema({
         type: Date,
         default: moment().format()
     },
-    clients: {
-        type: [{
+    clients: [
+         {
             type: Schema.Types.ObjectId,
-            ref: 'Trainee'
-        }],
-        default: []
+            ref: 'Client'
+        }
+    ],
+    updates: [{ type: Schema.Types.ObjectId, ref: 'Update' }],
+    description: {
+        type: String
     }
 });
 

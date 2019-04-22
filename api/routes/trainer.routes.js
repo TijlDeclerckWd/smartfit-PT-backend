@@ -1,7 +1,7 @@
 const express = require('express');
 
 const {
-    clientController
+    trainerController
 } = require('../controllers');
 
 const {
@@ -19,12 +19,12 @@ router.use(auth.verifyToken);
 
 // -| Routes |-
 
-router.get('/hasPickedTrainer', clientController.hasPickedTrainer);
-
-// client sends a hire request to a personal
-router.post('/sendHireRequest', clientController.sendHireRequest);
-
 // Client is searching for a personal trainer
-router.get('/searchTrainer/:input', clientController.searchTrainer);
+router.get('/getProfile/:trainerId', trainerController.getProfile);
+
+// get all the updates from a particular trainer
+router.get('/getAllUpdates', trainerController.getAllUpdates);
+
+router.put('/handleRequestResponse', trainerController.handleRequestResponse);
 
 module.exports = router;

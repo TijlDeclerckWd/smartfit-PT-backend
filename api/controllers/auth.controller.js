@@ -96,7 +96,10 @@ const signInTrainer = async (data, res) => {
 };
 
 const signInClient = async (data, res) => {
-    const client = await Client.findOne({ email: data.email }).select('trainers');
+    console.log('checkpoint 1', data);
+    const client = await Client.findOne({ email: data.email });
+
+    console.log('checkpoint 2', client);
 
 // If user wasn't found or user was previsously removed/disabled, return error
     if (!client) {
@@ -104,6 +107,8 @@ const signInClient = async (data, res) => {
     }
 
     const passDecrypted = await passwordHelper.decryptPassword(data.password, client.password);
+
+    console.log('checkpoint 3, passd', passDecrypted);
 
     if (!passDecrypted.password) {
         return sendErr(res, '', 'Please enter a valid email/password combination!', 401);
@@ -114,6 +119,9 @@ const signInClient = async (data, res) => {
         subject: client._id
     };
     const token = await jwt.sign(payload, process.env.JWT_KEY);
+
+    console.log('checkpoint 4', token);
+
 
     res.status(200).json({
         message: 'successfully logged in',

@@ -9,7 +9,8 @@ let devEnv = require('../development.config');
 const {
     authRoutes,
     userRoutes,
-    clientRoutes
+    clientRoutes,
+    trainerRoutes
 } = require('./routes');
 
 let app = express();
@@ -46,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/client', clientRoutes);
+app.use('/api/trainer', trainerRoutes);
 
 
 // catch 404 and forward to error handler

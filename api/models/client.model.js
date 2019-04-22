@@ -9,6 +9,11 @@ const ClientSchema = new Schema({
         required: true,
         default: true
     },
+    type: {
+        type: String,
+        required: true,
+        default: 'client'
+    },
     firstName: {
         type: String,
         required: true
@@ -32,7 +37,7 @@ const ClientSchema = new Schema({
     },
     profile_pic: {
         type: String,
-        default: 'default_user.png'
+        default: '/assets/images/default-profile-picture.png'
     },
     mobile_number: {
         type: String,
@@ -42,13 +47,19 @@ const ClientSchema = new Schema({
         type: Date,
         default: moment().format()
     },
-    trainers: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Trainer'
-        }],
-        default: []
-    }
+    data: {
+        type: Schema.Types.ObjectId,
+        ref: 'Clientdata'
+    },
+    trainers: [
+        { type: Schema.Types.ObjectId, ref: 'Trainer' }
+    ],
+    updates: [
+        { type: Schema.Types.ObjectId, ref: 'Update'}
+    ],
+    schedule: [
+        { type: Schema.Types.ObjectId, ref: 'Workout' }
+    ]
 });
 
 const Client = mongoose.model('Client', ClientSchema);
