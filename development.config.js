@@ -4,7 +4,6 @@ const init = () => {
     process.env.host = `http://localhost:${process.env.PORT}/`;
     process.env.JWT_KEY = 'MDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhAI4NtevVkBqWcQukvp9X4cCxh5ClhZ8k\n' +
         'DPQp+0FNM833AgMBAAE=';
-    // process.env.SENDGRID_KEY = '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';
 };
 
 module.exports = { init };
