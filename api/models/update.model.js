@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const UpdateSchema = new Schema({
-    type: { type: String, required: true, enum: ['request', 'workout'] },
+    type: { type: String, required: true, enum: ['request', 'new workout', 'workout complete'] },
     request: { type: Schema.Types.ObjectId, ref: 'Request' },
     workout: { type: Schema.Types.ObjectId, ref: 'Workout' },
     text: { type: String },

@@ -9,7 +9,7 @@ const WorkoutSchema = new Schema({
         required: true
     },
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     type: {
@@ -19,11 +19,13 @@ const WorkoutSchema = new Schema({
     },
     trainer: {
         type: Schema.Types.ObjectId,
-        ref: 'Trainer'
+        ref: 'Trainer',
+        required: true
     },
     client: {
         type: Schema.Types.ObjectId,
-        ref: 'Client'
+        ref: 'Client',
+        required: true
     },
     exercises: [
         {
@@ -31,8 +33,15 @@ const WorkoutSchema = new Schema({
             ref: 'Exercise'
         }
     ],
-    notes: {
+    exerciseData: [
+        { sets: Number, weight: Number, reps: Number }
+    ],
+    instructions: {
         type: String
+    },
+    complete: {
+        type: Boolean,
+        default: false
     }
 });
 

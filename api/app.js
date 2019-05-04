@@ -10,7 +10,9 @@ const {
     authRoutes,
     userRoutes,
     clientRoutes,
-    trainerRoutes
+    trainerRoutes,
+    exerciseRoutes,
+    workoutRoutes
 } = require('./routes');
 
 let app = express();
@@ -48,6 +50,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/client', clientRoutes);
 app.use('/api/trainer', trainerRoutes);
+app.use('/api/exercise', exerciseRoutes);
+app.use('/api/workout', workoutRoutes);
 
 
 // catch 404 and forward to error handler

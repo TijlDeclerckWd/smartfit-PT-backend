@@ -16,6 +16,15 @@ const ExerciseSchema = new Schema({
     },
     instructions: {
         type: String
+    },
+    videoLink: {
+        type: String
+    },
+    targetMuscles: {
+        type: String
+    },
+    bulletPoints: {
+        type: Array
     }
 });
 

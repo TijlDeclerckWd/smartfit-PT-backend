@@ -1,4 +1,4 @@
-const { Request, Update, Trainer } = require('../models');
+const { Request, Update, Trainer, Client } = require('../models');
 
 const {
     sendErr
@@ -12,12 +12,28 @@ const {
 
 
 const hasPickedTrainer = (req, res) => {
-    console.log('req.userId', req.userId);
-
     res.status(200).json({
         hasPickedTrainer: true,
         userId: 'dfnjdnfjdnfjnfje'
     })
+};
+
+const loadAllUpdates = async (req, res) => {
+    try {
+        const client = await Client.findOne(
+            {_id: req.userId})
+            .populate({
+                path: 'updates', populate: [{path: 'client'}, {path: 'trainer'}, {path: 'workout'}]
+            });
+
+        // reverse the order of the array of updates
+        const updates = client.updates.reverse();
+
+        res.status(200).json({
+            message: 'Successfully retrieved the updates',
+            updates
+        });
+    } catch (err) {}
 };
 
 const sendHireRequest = async (req, res) => {
@@ -47,16 +63,14 @@ const sendHireRequest = async (req, res) => {
         // Create a new update
         const newUpdate = await Update.create(update);
 
-
         // add update to trainer updates property
-        const updatedTrainer = await Trainer.findOneAndUpdate({ _id: req.body.trainerId }, {
+        await Trainer.findOneAndUpdate({ _id: req.body.trainerId }, {
             $addToSet: {
                 updates: newUpdate._id
             }}, {
             new: true
         });
 
-        console.log('updatedTrainer', updatedTrainer);
         // send positive response back to the browser
         res.status(200).json({
             message: "succesfully created hire request"
@@ -66,17 +80,14 @@ const sendHireRequest = async (req, res) => {
     }
 };
 
+
 const searchTrainer = async (req, res) => {
     try {
         const {input} = req.params;
 
-        console.log('input check', input);
-
         const trainers = await Trainer.find({
             fullName: {$regex: input, $options: 'i'}
         });
-
-        console.log('TRAINERS CHECK', trainers);
 
         res.status(200).json({
             message: 'successfully retrieved the trainers',
@@ -88,8 +99,10 @@ const searchTrainer = async (req, res) => {
 };
 
 
+
 module.exports = {
     hasPickedTrainer,
+    loadAllUpdates,
     sendHireRequest,
     searchTrainer
 };

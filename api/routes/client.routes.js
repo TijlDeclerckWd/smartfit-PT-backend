@@ -19,12 +19,16 @@ router.use(auth.verifyToken);
 
 // -| Routes |-
 
+// to check whether this client has already picked a trainer
 router.get('/hasPickedTrainer', clientController.hasPickedTrainer);
 
-// client sends a hire request to a personal
+// return all the updates of a certain client
+router.get('/loadAllUpdates', clientController.loadAllUpdates);
+
+// client sends a hire request to a personal trainer
 router.post('/sendHireRequest', clientController.sendHireRequest);
 
-// Client is searching for a personal trainer
+// Client is searching for a personal trainer, we provide him with a list of possibilities based on input
 router.get('/searchTrainer/:input', clientController.searchTrainer);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { Trainer, Request, Update, Client } = require('../models');
+const { Trainer, Request, Update, Client, Workout } = require('../models');
 
 const {
     sendErr
@@ -12,9 +12,10 @@ const {
 
 const getProfile = async (req, res) => {
     try {
-
         const { trainerId } = req.params;
 
+        // find the specific trainer
+        // we should probably decrease the amount of fields that we will select and return to frontend
         const trainer  = await Trainer.findOne({ _id: trainerId });
 
         res.status(200).json({
@@ -84,25 +85,17 @@ const handleHireRequest = async (request, response) => {
             $addToSet: { clients: request.client}
         });
 
-    console.log('TRAINER CHECK', request.client);
-
     // we add the trainer to client's trainer property
     const client = await Client.findOneAndUpdate({ _id: request.client },
         {
         $addToSet: { trainers: request.trainer }
         });
 
-    console.log('CLIENT CHECK', client);
-
     //     and then eventually remove this request document because it has been handled
         const deletedRequest = await Request.remove({ _id: request._id });
 
-        console.log('deletedRequest', deletedRequest);
-
     // and remove the update document as well. this way it won't show up in the feed
         const deletedUpdate = await Update.remove({ request: request._id });
-
-        console.log('deletedUpdate', deletedUpdate);
 
 
     //    and remove the update from the trainer document
@@ -122,10 +115,33 @@ const handleHireRequest = async (request, response) => {
     }
 };
 
+const loadClientSchedule = async (req, res) => {
+    try {
+        const { clientId} = req.params;
+
+        const workouts = await Workout.find({
+            $and: [
+                { client: clientId },
+                { trainer: req.userId },
+                { complete: false },
+                { date: { $gt: Date.now() }}
+            ]
+        }).populate('exercises');
+
+        res.status(200).json({
+            message: 'succesfully retrieved the schedule of the client',
+            workouts
+        })
+    } catch(err) {
+        sendErr(res, err);
+    }
+};
+
 
 
 module.exports = {
     getAllUpdates,
     getProfile,
-    handleRequestResponse
+    handleRequestResponse,
+    loadClientSchedule
 };

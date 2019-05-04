@@ -25,6 +25,10 @@ router.get('/getProfile/:trainerId', trainerController.getProfile);
 // get all the updates from a particular trainer
 router.get('/getAllUpdates', trainerController.getAllUpdates);
 
+// handle the request
 router.put('/handleRequestResponse', trainerController.handleRequestResponse);
+
+// load the schedule of the client
+router.get('/loadClientSchedule/:clientId', trainerController.loadClientSchedule);
 
 module.exports = router;
