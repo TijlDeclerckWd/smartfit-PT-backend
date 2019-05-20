@@ -5,6 +5,7 @@ const Update = require('./update.model');
 const Alliance = require('./alliance.model');
 const Workout = require('./workout.model');
 const Exercise = require('./exercise.model');
+const Stats = require('./stats.model');
 
 module.exports = {
    Client,
@@ -13,5 +14,6 @@ module.exports = {
     Update,
     Alliance,
     Workout,
-    Exercise
+    Exercise,
+    Stats
 };

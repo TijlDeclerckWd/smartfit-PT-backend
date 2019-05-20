@@ -1,4 +1,4 @@
-const { Workout, Trainer, Client, Update } = require('../models');
+const { Workout, Trainer, Client, Update , Stats } = require('../models');
 
 const {
     sendErr
@@ -8,6 +8,47 @@ const {
  *  -- WORKOUT METHODS --
  *  =====================
  */
+
+const completedWorkout = async (req, res) => {
+    try {
+        const { workoutId } = req.params;
+
+        const updatedWorkout = await Workout.findOneAndUpdate(
+            { _id: req.params.workoutId, client: req.userId, complete: false },
+            { complete: true}
+            )
+            .populate('trainer client');
+
+        if (!updatedWorkout) {
+            sendErr(res, null, "We did not find such a workout and thus can't update");
+        }
+
+        // update the stats
+        await Stats.findOneAndUpdate({ client: req.userId },
+            { $inc: { workoutsCompleted: 1 }});
+
+
+
+        // Create an update that will let the trainer know that the workout is complete
+        const updateData = {
+            type: 'workout complete',
+            workout: workoutId,
+            text: `I have completed the exercise "${updatedWorkout.name}"`,
+            trainer: updatedWorkout.trainer._id,
+            client: updatedWorkout.client._id,
+            updateFrom: 'client'
+        };
+
+        Update.create(updateData);
+
+        res.status(200).json({
+            message: "Successfully updated the workout"
+        });
+
+    } catch (err) {
+        sendErr(res, err);
+    }
+};
 
 const createNewWorkout = async (req, res) => {
     let data = req.body;
@@ -113,10 +154,40 @@ const loadRecentWorkouts = async (req, res) => {
     })
 };
 
+const saveExerciseData = async (req, res) => {
+  try {
+      const { workoutId, exerciseNumber, exerciseId } = req.params;
+
+      const workout = await Workout.findOne({ _id: workoutId });
+
+      if (!workout) {
+          sendErr(res, null, 'There is no such workout');
+      }
+
+      // add the reps to the exercise data in the workout document
+      let exerciseData = workout.exerciseData[parseInt(exerciseNumber, 10) - 1];
+      // add the array of reps to the data
+      exerciseData.reps = req.body.data;
+
+      // save the edited document
+      await workout.save();
+
+
+
+      res.status(200).json({
+          message: "successfully save the exercise data"
+      });
+  } catch (err) {
+      sendErr(res, err);
+  }
+};
+
 
 module.exports = {
     createNewWorkout,
     getWorkout,
     loadRecentWorkouts,
-    loadClientSchedule
+    loadClientSchedule,
+    saveExerciseData,
+    completedWorkout
 };

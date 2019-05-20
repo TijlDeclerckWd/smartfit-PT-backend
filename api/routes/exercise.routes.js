@@ -38,5 +38,11 @@ router.use(auth.verifyToken);
 // Create a new exercise
 router.post('/createNewExercise', upload, exerciseController.createNewExercise);
 
+// Return the search results for exercises
+router.get('/getExerciseSearchResults/:exerciseName', exerciseController.getExerciseSearchResults);
+
+// get the exercise that a client has data for (this needs to be adjusted in futute)
+router.get('/getClientExercises', exerciseController.getClientExercises);
+
 
 module.exports = router;

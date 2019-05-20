@@ -6,7 +6,8 @@ const {
 
 const {
     Client,
-    Trainer
+    Trainer,
+    Stats
 } = require('../models');
 
 
@@ -14,6 +15,18 @@ const {
  *  -- AUTH METHODS --
  *  ==================
  */
+
+const getId = async (res, req) => {
+    try {
+        if (req.userId) {
+            res.status(200).json({
+                userId: req.userId
+            });
+        }
+    } catch(err) {
+        sendErr(res, err);
+    }
+}
 
 const signUp = async (req, res) => {
     try {
@@ -37,10 +50,19 @@ const signUp = async (req, res) => {
         if (data.type === 'client') {
             const newClient = await Client.create(data);
 
+            // create the stats document for this particular user
+            const statsData = { client: newClient._id };
+            const stats = await Stats.create(statsData);
+
+            // add stats to client
+            newClient.stats = stats._id;
+            await newClient.save();
+
             return res.status(200).json({
                 message: 'success',
                 newClient
             });
+
         } else if (data.type === 'trainer') {
             const newTrainer = await Trainer.create(data);
 
@@ -134,6 +156,7 @@ const signInClient = async (data, res) => {
  */
 
 module.exports = {
+    getId,
     signUp,
     signIn
 };

@@ -13,9 +13,10 @@ sendErr
 
 const createNewExercise = async (req, res) => {
     try {
-        const { name, videoLink, instructions, targetMuscles } = req.body;
+        const { name, videoLink, instructions } = req.body;
         // we had to convert the array to JSON
         const bulletPoints = JSON.parse(req.body.bulletPoints);
+        targetMuscles = [req.body.targetMuscles];
 
         const data = {
             name,
@@ -25,8 +26,6 @@ const createNewExercise = async (req, res) => {
             image: req.file.filename,
             bulletPoints
         };
-
-        console.log('bullet points', bulletPoints);
 
         const newExercise = await Exercise.create(data);
 
@@ -39,7 +38,38 @@ const createNewExercise = async (req, res) => {
     }
 };
 
+const getExerciseSearchResults = async (req, res) => {
+    try {
+        const {exerciseName} = req.params;
+
+        const exercises = await Exercise.find({name: { $regex: exerciseName, $options: 'i' }});
+
+        res.status(200).json({
+            message: "Successfully retrieved the exercises",
+            exercises
+        })
+    } catch (err) {
+        sendErr(res, err);
+    }
+};
+
+const getClientExercises = async (req, res) => {
+    try {
+        // this is a temporary solution, fix it later so that we return only the exercises that a client has data for
+        const exercises = await Exercise.find({});
+
+        res.status(200).json({
+            message: "Succesfully retrieved",
+            exercises
+        });
+    } catch (err) {
+        sendErr(res, err);
+    }
+};
+
 
 module.exports = {
-  createNewExercise
+  createNewExercise,
+    getExerciseSearchResults,
+    getClientExercises
 };

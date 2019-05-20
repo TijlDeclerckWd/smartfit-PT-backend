@@ -4,6 +4,7 @@ const init = () => {
     process.env.host = `http://localhost:${process.env.PORT}/`;
     process.env.JWT_KEY = 'MDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhAI4NtevVkBqWcQukvp9X4cCxh5ClhZ8k\n' +
         'DPQp+0FNM833AgMBAAE=';
+    process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
 };
 
 module.exports = { init };

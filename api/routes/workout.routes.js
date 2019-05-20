@@ -16,8 +16,10 @@ router.use(auth.verifyToken);
 // Check if user is logged in
 // router.use(auth.isLoggedIn);
 
-
 // -| Routes |-
+
+// Client completed a workout
+router.get('/completedWorkout/:workoutId', workoutController.completedWorkout);
 
 // create new workout
 router.post('/createNewWorkout', workoutController.createNewWorkout);

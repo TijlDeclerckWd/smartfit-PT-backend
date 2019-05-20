@@ -5,6 +5,9 @@ const {
 
 const router = express.Router();
 
+// return the id of user
+router.get('/getId', authController.getId);
+
 // sign up trainee
 router.post('/signUp', authController.signUp);
 

@@ -37,7 +37,7 @@ const ClientSchema = new Schema({
     },
     profile_pic: {
         type: String,
-        default: '/assets/images/default-profile-picture.png'
+        default: 'default_user.png'
     },
     mobile_number: {
         type: String,
@@ -47,9 +47,9 @@ const ClientSchema = new Schema({
         type: Date,
         default: moment().format()
     },
-    data: {
+    stats: {
         type: Schema.Types.ObjectId,
-        ref: 'Clientdata'
+        ref: 'Stats'
     },
     trainers: [
         { type: Schema.Types.ObjectId, ref: 'Trainer' }

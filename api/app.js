@@ -12,7 +12,8 @@ const {
     clientRoutes,
     trainerRoutes,
     exerciseRoutes,
-    workoutRoutes
+    workoutRoutes,
+    statsRoutes
 } = require('./routes');
 
 let app = express();
@@ -41,9 +42,15 @@ res.setHeader(
 next();
 });
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/user', userRoutes);
@@ -52,6 +59,7 @@ app.use('/api/client', clientRoutes);
 app.use('/api/trainer', trainerRoutes);
 app.use('/api/exercise', exerciseRoutes);
 app.use('/api/workout', workoutRoutes);
+app.use('/api/stats', statsRoutes);
 
 
 // catch 404 and forward to error handler

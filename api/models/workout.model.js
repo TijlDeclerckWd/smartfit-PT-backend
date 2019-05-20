@@ -34,7 +34,7 @@ const WorkoutSchema = new Schema({
         }
     ],
     exerciseData: [
-        { sets: Number, weight: Number, reps: Number }
+        { sets: Number, weight: Number, reps: Array }
     ],
     instructions: {
         type: String

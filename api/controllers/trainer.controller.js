@@ -80,22 +80,22 @@ const handleHireRequest = async (request, response) => {
     if (response === 'confirm') {
 
     //     we create a new trainer/client relationship by adding the client to the trainer doc
-    const trainer = await Trainer.findOneAndUpdate({ _id: request.trainer },
+    await Trainer.findOneAndUpdate({ _id: request.trainer },
         {
             $addToSet: { clients: request.client}
         });
 
     // we add the trainer to client's trainer property
-    const client = await Client.findOneAndUpdate({ _id: request.client },
+    await Client.findOneAndUpdate({ _id: request.client },
         {
         $addToSet: { trainers: request.trainer }
         });
 
     //     and then eventually remove this request document because it has been handled
-        const deletedRequest = await Request.remove({ _id: request._id });
+        await Request.remove({ _id: request._id });
 
     // and remove the update document as well. this way it won't show up in the feed
-        const deletedUpdate = await Update.remove({ request: request._id });
+        await Update.remove({ request: request._id });
 
 
     //    and remove the update from the trainer document
@@ -137,11 +137,51 @@ const loadClientSchedule = async (req, res) => {
     }
 };
 
+const loadClientUpdates = async (req, res) => {
+  try {
+      const { clientId } = req.params;
+
+      const updates = await Update.find({ type: 'workout complete', client: clientId, updateFrom: 'client'})
+          .populate('workout client trainer');
+
+      res.status(200).json({
+          message: "SuccessFully retrieved client updates",
+          updates
+      })
+  }  catch(err) {
+      sendErr(res, err);
+  }
+};
+
+const uploadProfilePic = async (req, res) => {
+    try {
+
+        console.log('filename', req.file.filename);
+
+        // we willen de filename opslaan als het profilePic property
+        const updatedTrainer = await Trainer.findOneAndUpdate(
+            { _id: req.userId },
+            { profile_pic: req.file.filename }
+        );
+
+        console.log('updatedTrainer', updatedTrainer);
+
+        res.status(200).json({
+            message: "successfully uploaded the profile picture",
+            updatedTrainer
+        });
+    } catch (err) {
+        sendErr(res, err);
+    }
+};
+
 
 
 module.exports = {
     getAllUpdates,
     getProfile,
     handleRequestResponse,
-    loadClientSchedule
+    loadClientSchedule,
+    loadClientUpdates,
+    uploadProfilePic
 };

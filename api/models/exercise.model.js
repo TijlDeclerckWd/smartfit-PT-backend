@@ -21,10 +21,15 @@ const ExerciseSchema = new Schema({
         type: String
     },
     targetMuscles: {
-        type: String
+        type: [String],
+        enum: ['shoulders', 'chest', 'back', 'triceps', 'biceps']
     },
     bulletPoints: {
         type: Array
+    },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'Trainer'
     }
 });
 

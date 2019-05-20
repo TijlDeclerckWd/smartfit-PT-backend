@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 
 const {
     trainerController
@@ -7,6 +8,19 @@ const {
 const {
     auth
 } = require('../../utils');
+
+const multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/trainers/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+});
+
+let upload = multer({ storage: storage }).single('profilePic');
 
 const router = express.Router();
 
@@ -30,5 +44,11 @@ router.put('/handleRequestResponse', trainerController.handleRequestResponse);
 
 // load the schedule of the client
 router.get('/loadClientSchedule/:clientId', trainerController.loadClientSchedule);
+
+// load all the updates of a specific client
+router.get('/loadClientUpdates/:clientId', trainerController.loadClientUpdates);
+
+// upload the profile picture
+router.post('/uploadProfilePic', upload, trainerController.uploadProfilePic);
 
 module.exports = router;
