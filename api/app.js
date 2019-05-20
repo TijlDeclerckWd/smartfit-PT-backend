@@ -4,6 +4,7 @@ let path = require('path');
 let cors = require('cors');
 let cookieParser = require('cookie-parser');
 let devEnv = require('../development.config');
+let prodEnv = require('../prod.config');
 
 
 const {
@@ -21,6 +22,8 @@ let app = express();
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
     devEnv.init();
+} else {
+    prodEnv.init();
 }
 
 // Open Mongoose connection to db
