@@ -2,29 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e15170af-f485-4b08-8fe8-9b30814a3752" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/controllers/stats-info.dox" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/controllers/stats.controller.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/models/stats.model.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/routes/stats.routes.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/stats/stats.js" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/api/app.js" afterPath="$PROJECT_DIR$/api/app.js" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/auth.controller.js" afterPath="$PROJECT_DIR$/api/controllers/auth.controller.js" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/exercise.controller.js" afterPath="$PROJECT_DIR$/api/controllers/exercise.controller.js" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/index.js" afterPath="$PROJECT_DIR$/api/controllers/index.js" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/trainer.controller.js" afterPath="$PROJECT_DIR$/api/controllers/trainer.controller.js" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/workout.controller.js" afterPath="$PROJECT_DIR$/api/controllers/workout.controller.js" />
-      <change beforePath="$PROJECT_DIR$/api/models/client.model.js" afterPath="$PROJECT_DIR$/api/models/client.model.js" />
-      <change beforePath="$PROJECT_DIR$/api/models/exercise.model.js" afterPath="$PROJECT_DIR$/api/models/exercise.model.js" />
-      <change beforePath="$PROJECT_DIR$/api/models/index.js" afterPath="$PROJECT_DIR$/api/models/index.js" />
-      <change beforePath="$PROJECT_DIR$/api/models/workout.model.js" afterPath="$PROJECT_DIR$/api/models/workout.model.js" />
-      <change beforePath="$PROJECT_DIR$/api/routes/auth.routes.js" afterPath="$PROJECT_DIR$/api/routes/auth.routes.js" />
-      <change beforePath="$PROJECT_DIR$/api/routes/exercise.routes.js" afterPath="$PROJECT_DIR$/api/routes/exercise.routes.js" />
-      <change beforePath="$PROJECT_DIR$/api/routes/index.js" afterPath="$PROJECT_DIR$/api/routes/index.js" />
-      <change beforePath="$PROJECT_DIR$/api/routes/trainer.routes.js" afterPath="$PROJECT_DIR$/api/routes/trainer.routes.js" />
-      <change beforePath="$PROJECT_DIR$/api/routes/workout.routes.js" afterPath="$PROJECT_DIR$/api/routes/workout.routes.js" />
-      <change beforePath="$PROJECT_DIR$/development.config.js" afterPath="$PROJECT_DIR$/development.config.js" />
-      <change beforePath="$PROJECT_DIR$/utils/index.js" afterPath="$PROJECT_DIR$/utils/index.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -353,12 +331,12 @@
       <workItem from="1557772121886" duration="4312000" />
       <workItem from="1557942922702" duration="1195000" />
       <workItem from="1558012762167" duration="9208000" />
-      <workItem from="1558370873798" duration="2838000" />
+      <workItem from="1558370873798" duration="4073000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="231037000" />
+    <option name="totallyTimeSpent" value="232272000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
