@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Connect mongoose to db
-const dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/smartfit-pt';
-console.log('DBURL', dbURL);
+const dbURL = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/smartfit-pt';
 mongoose.connect(dbURL);
 
 // Log Mongoose connection status changes:

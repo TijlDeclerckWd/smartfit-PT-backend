@@ -19,10 +19,14 @@ const {
 
 let app = express();
 
+console.log('check env', process.env.NODE_ENV);
+
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
+    console.log('were in dev mode');
     devEnv.init();
 } else {
+    console.log('were in prod mode');
     prodEnv.init();
 }
 
