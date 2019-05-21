@@ -30,6 +30,8 @@ const getAllUpdates = async (req, res) => {
     try {
         const {userId} = req;
 
+        console.log('userId', userId);
+
         const trainer = await Trainer.findOne({_id: userId})
             .populate([
                 {
@@ -42,12 +44,27 @@ const getAllUpdates = async (req, res) => {
                   path: 'clients'
                 }]);
 
+        console.log('trainer', trainer);
+
         res.status(200).json({
             trainer
         });
     } catch (err) {
         sendErr(res, err);
     }
+};
+
+const getRecentlyRegisteredTrainers = async (req, res) => {
+  try {
+      const trainers = await Trainer.find({}).sort('-created_date');
+
+      res.status(200).json({
+          message: "Succesfully retrieved all the trainers",
+          trainers
+      });
+  } catch(err) {
+      sendErr(res, err);
+  }
 };
 
 const handleRequestResponse = async (req, res) => {
@@ -155,16 +172,11 @@ const loadClientUpdates = async (req, res) => {
 
 const uploadProfilePic = async (req, res) => {
     try {
-
-        console.log('filename', req.file.filename);
-
         // we willen de filename opslaan als het profilePic property
         const updatedTrainer = await Trainer.findOneAndUpdate(
             { _id: req.userId },
             { profile_pic: req.file.filename }
         );
-
-        console.log('updatedTrainer', updatedTrainer);
 
         res.status(200).json({
             message: "successfully uploaded the profile picture",
@@ -180,6 +192,7 @@ const uploadProfilePic = async (req, res) => {
 module.exports = {
     getAllUpdates,
     getProfile,
+    getRecentlyRegisteredTrainers,
     handleRequestResponse,
     loadClientSchedule,
     loadClientUpdates,

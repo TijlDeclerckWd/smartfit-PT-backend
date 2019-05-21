@@ -37,7 +37,7 @@ const TrainerSchema = new Schema({
     },
     profile_pic: {
         type: String,
-        default: 'default_user.png'
+        default: 'default_user.jpg'
     },
     mobile_number: {
         type: String,

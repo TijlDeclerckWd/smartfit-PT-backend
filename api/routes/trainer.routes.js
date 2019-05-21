@@ -36,6 +36,9 @@ router.use(auth.verifyToken);
 // Client is searching for a personal trainer
 router.get('/getProfile/:trainerId', trainerController.getProfile);
 
+// get recently registered trainers
+router.get('/getRecentlyRegisteredTrainers', trainerController.getRecentlyRegisteredTrainers);
+
 // get all the updates from a particular trainer
 router.get('/getAllUpdates', trainerController.getAllUpdates);
 
