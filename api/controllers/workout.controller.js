@@ -69,6 +69,9 @@ const createNewWorkout = async (req, res) => {
         updateFrom: 'trainer'
     };
 
+    // create a new workout document
+
+
     const newUpdate = await Update.create(updateData);
 
     // add this new update to the trainer and the client
@@ -141,10 +144,11 @@ const loadRecentWorkouts = async (req, res) => {
             ]
         })
         .sort('-date')
+        .limit(5)
         .populate([
-            {path: 'trainer'},
-            {path: 'client'},
-            {path: 'exercises'}
+            { path: 'trainer' },
+            { path: 'client' },
+            { path: 'exercises' }
         ]
     );
 

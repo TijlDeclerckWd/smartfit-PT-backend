@@ -22,7 +22,7 @@ const createNewExercise = async (req, res) => {
             name,
             videoLink,
             instructions,
-            targetMuscles,
+            targetMuscles: [targetMuscles[0].toLowerCase()],
             image: req.file.filename,
             bulletPoints
         };

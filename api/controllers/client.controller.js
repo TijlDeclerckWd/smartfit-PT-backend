@@ -98,8 +98,6 @@ const searchTrainer = async (req, res) => {
     }
 };
 
-
-
 module.exports = {
     hasPickedTrainer,
     loadAllUpdates,
