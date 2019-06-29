@@ -19,6 +19,8 @@ const {
 
 let app = express();
 
+console.log('YEEEEES');
+
 console.log('check env', process.env.NODE_ENV);
 
 // Load 'development' configs for dev environment
