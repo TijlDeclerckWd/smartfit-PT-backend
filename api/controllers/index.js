@@ -4,6 +4,7 @@ const trainerController = require('./trainer.controller');
 const exerciseController = require('./exercise.controller');
 const workoutController = require('./workout.controller');
 const statsController = require('./stats.controller');
+const messagesController = require('./messages.controller');
 
 module.exports = {
   authController,
@@ -11,5 +12,6 @@ module.exports = {
     trainerController,
     exerciseController,
     workoutController,
-    statsController
+    statsController,
+  messagesController
 };

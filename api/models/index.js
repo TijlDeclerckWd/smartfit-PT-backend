@@ -6,6 +6,8 @@ const Alliance = require('./alliance.model');
 const Workout = require('./workout.model');
 const Exercise = require('./exercise.model');
 const Stats = require('./stats.model');
+const Message = require('./message.model');
+const Conversation = require('./conversation.model');
 
 module.exports = {
    Client,
@@ -15,5 +17,7 @@ module.exports = {
     Alliance,
     Workout,
     Exercise,
-    Stats
+    Stats,
+ Message,
+ Conversation
 };

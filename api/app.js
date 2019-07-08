@@ -7,6 +7,19 @@ let devEnv = require('../development.config');
 let prodEnv = require('../prod.config');
 
 
+// Make sure that you add this later to the process.env
+const whitelist = ['http://localhost:4300'];
+const corsOptions = {
+    credentials: true, // This is important.
+    origin: (origin, callback) => {
+        console.log('CORS origin', origin);
+        if(whitelist.includes(origin))
+            return callback(null, true);
+
+        callback(new Error('Not allowed by CORS'));
+    }
+};
+
 const {
     authRoutes,
     userRoutes,
@@ -14,14 +27,13 @@ const {
     trainerRoutes,
     exerciseRoutes,
     workoutRoutes,
-    statsRoutes
+    statsRoutes,
+    messagesRoutes
 } = require('./routes');
 
 let app = express();
 
-console.log('YEEEEES');
 
-console.log('check env', process.env.NODE_ENV);
 
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
@@ -39,7 +51,8 @@ require('../db');
 app.use(cors());
 
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    // console.log('ORIGIN', req.headers.origin);
+    // res.setHeader("Access-Control-Allow-Origin", 'http://localhost:4300');
 res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -59,9 +72,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
-// app.use('/uploads', express.static(path.join(__dirname, process.env.FILE_UPLOAD_FOLDER)));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -70,6 +84,7 @@ app.use('/api/trainer', trainerRoutes);
 app.use('/api/exercise', exerciseRoutes);
 app.use('/api/workout', workoutRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/messages', messagesRoutes);
 
 
 // catch 404 and forward to error handler
