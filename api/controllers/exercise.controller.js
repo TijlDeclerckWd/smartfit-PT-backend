@@ -13,9 +13,11 @@ sendErr
 
 const createNewExercise = async (req, res) => {
     try {
+        console.log('reqBOODY', req.body);
         const { name, videoLink, instructions } = req.body;
         // we had to convert the array to JSON
         const bulletPoints = JSON.parse(req.body.bulletPoints);
+        const fileName = req.file ? req.file.filename : 'exercise-icon.png',
         targetMuscles = [req.body.targetMuscles];
 
         const data = {
@@ -23,7 +25,7 @@ const createNewExercise = async (req, res) => {
             videoLink,
             instructions,
             targetMuscles: [targetMuscles[0].toLowerCase()],
-            image: req.file.filename,
+            image: fileName,
             bulletPoints
         };
 

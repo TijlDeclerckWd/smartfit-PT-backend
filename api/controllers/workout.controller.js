@@ -16,8 +16,7 @@ const completedWorkout = async (req, res) => {
         const updatedWorkout = await Workout.findOneAndUpdate(
             { _id: req.params.workoutId, client: req.userId, complete: false },
             { complete: true}
-            )
-            .populate('trainer client');
+            ).populate('trainer client');
 
         if (!updatedWorkout) {
             sendErr(res, null, "We did not find such a workout and thus can't update");
@@ -51,10 +50,14 @@ const completedWorkout = async (req, res) => {
 };
 
 const createNewWorkout = async (req, res) => {
+    console.log('reached Baceknd baby', req.body);
     let data = req.body;
     data.trainer = req.userId;
 
+    // create the new workout
     const newWorkout = await Workout.create(data);
+
+    console.log('Is there a new workout?', newWorkout);
 
     if (!newWorkout) {
         sendErr(res, null, "Unable to create the new workout")

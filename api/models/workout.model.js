@@ -12,11 +12,6 @@ const WorkoutSchema = new Schema({
         type: Date,
         required: true
     },
-    type: {
-      type: String,
-      required: true,
-      enum: ['muscle', 'cardio']
-    },
     trainer: {
         type: Schema.Types.ObjectId,
         ref: 'Trainer',
