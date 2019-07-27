@@ -1,4 +1,6 @@
 const { Trainer, Request, Update, Client, Workout } = require('../models');
+const moment = require('moment');
+
 
 const {
     sendErr
@@ -141,7 +143,7 @@ const loadClientSchedule = async (req, res) => {
                 { client: clientId },
                 { trainer: req.userId },
                 { complete: false },
-                { date: { $gt: Date.now() }}
+                { date: { $gt: moment().subtract(1, "days").toDate() }}
             ]
         }).populate('exercises');
 

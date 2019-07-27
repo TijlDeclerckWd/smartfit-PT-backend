@@ -9,10 +9,9 @@ const StatsSchema = new Schema({
         ref: 'Client',
         required: true
     },
-    workoutsCompleted: {
-        type: Number,
-        default: 0
-    },
+    workoutsCompleted:
+        [ { date: { type: Date }, number: { type: Number }, workout: { type: Schema.Types.ObjectId, ref: 'Workout' }} ]
+    ,
     bodyWeight: [
         { date: { type: String, default: moment().format()}, weight: Number }
     ],
@@ -66,7 +65,7 @@ const StatsSchema = new Schema({
         }
     ],
     oneRMS: [
-        { exercise: { type: Schema.Types.ObjectId, ref: 'Exercise' }, date: { type: Date, default: moment().format() }, oneRM: Number }
+        { exercise: { type: Schema.Types.ObjectId, ref: 'Exercise' }, date: { type: Date, default: new Date() }, oneRM: Number }
     ],
     weightLiftedPerExercise: [
         {   exercise: { type: Schema.Types.ObjectId, ref: 'Exercise' },

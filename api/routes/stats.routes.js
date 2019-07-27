@@ -22,6 +22,9 @@ router.get('/getExerciseRMData/:exerciseId', statsController.getExerciseRMData);
 // get exercise volume data
 router.get('/getExerciseVolumeData/:exerciseId', statsController.getExerciseVolumeData);
 
+// get the total amount of workouts
+router.get('/getTotalWorkouts', statsController.getTotalWorkouts);
+
 // get the weight stats of the client
 router.get('/getWeightStats', statsController.getWeightStats);
 

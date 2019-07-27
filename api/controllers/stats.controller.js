@@ -26,6 +26,18 @@ const getExerciseRMData = async (req, res) => {
     }
 };
 
+const getTotalWorkouts = async (req, res) => {
+    try {
+        const stats = await Stats.findOne({ client: req.userId });
+
+        res.status(200).json({
+            data: stats.workoutsCompleted
+        });
+    } catch(err) {
+        sendErr(res, err);
+    }
+}
+
 const getWeightStats = async (req, res) => {
     try {
         const stats = await Stats.findOne({ client: req.userId });
@@ -185,17 +197,11 @@ const muscleGroupWeekData = async (req, res) => {
     //    now I want to go to every muscle group and pull out the week we're targeting
         const stats = await Stats.findOne({ client: req.userId });
 
-
         const chest = stats.weekSetsChest.find((week) => moment(week.weekStart).isSame(beginWeek, 'day') && moment(week.weekEnd).isSame(endWeek, 'day'));
         const back = stats.weekSetsBack.find((week) => moment(week.weekStart).isSame(beginWeek, 'day') && moment(week.weekEnd).isSame(endWeek, 'day'));
         const biceps = stats.weekSetsBiceps.find((week) => moment(week.weekStart).isSame(beginWeek, 'day') && moment(week.weekEnd).isSame(endWeek, 'day'));
         const triceps = stats.weekSetsTriceps.find((week) => moment(week.weekStart).isSame(beginWeek, 'day') && moment(week.weekEnd).isSame(endWeek, 'day'));
     //    add shoulders, quads and hamstrings later
-
-        console.log('chest', chest);
-        console.log('chest', back);
-        console.log('chest', biceps);
-        console.log('chest', triceps);
 
         res.status(200).json({
             message: 'successfully retrieved',
@@ -216,6 +222,7 @@ const muscleGroupWeekData = async (req, res) => {
 module.exports = {
     getExerciseRMData,
     getExerciseVolumeData,
+    getTotalWorkouts,
     getWeightStats,
     muscleGroupWeekData,
 saveExerciseData

@@ -1,4 +1,5 @@
 const { Workout, Trainer, Client, Update , Stats } = require('../models');
+const moment = require('moment');
 
 const {
     sendErr
@@ -13,6 +14,7 @@ const completedWorkout = async (req, res) => {
     try {
         const { workoutId } = req.params;
 
+        // change status of workout document to complete
         const updatedWorkout = await Workout.findOneAndUpdate(
             { _id: req.params.workoutId, client: req.userId, complete: false },
             { complete: true}
@@ -23,9 +25,14 @@ const completedWorkout = async (req, res) => {
         }
 
         // update the stats
-        await Stats.findOneAndUpdate({ client: req.userId },
-            { $inc: { workoutsCompleted: 1 }});
+        const statsToUpdate = await Stats.findOne({ client: req.userId });
+        // how many workouts have we completed?
+        const length = statsToUpdate.workoutsCompleted.length;
+        // add new date and totalNumber to the stats
+        statsToUpdate.workoutsCompleted.push({ date: updatedWorkout.date, number: length + 1, workout: updatedWorkout._id });
+        await statsToUpdate.save();
 
+        console.log('updatedStat', statsToUpdate);
 
 
         // Create an update that will let the trainer know that the workout is complete
@@ -114,13 +121,12 @@ res.status(200).json({
 
 const loadClientSchedule = async (req, res) => {
     try {
-        console.log('req.userId', req.userId);
 
         const workouts = await Workout.find({
             $and: [
                 { client: req.userId },
                 { complete: false },
-                { date: { $gt: Date.now() }}
+                { date: { $gt: moment().subtract(1, "days").toDate() }}
             ]
         })
             .sort('date')
