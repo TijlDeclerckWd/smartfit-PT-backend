@@ -34,7 +34,6 @@ const init = (server) => {
         });
 
         socket.on('updateSeenMessages', async (conversationId) => {
-            console.log('WE FIRED NUMBER 1');
             const conversation = await Conversation.findOne({ _id: conversationId });
 
             conversation.seenMessages = conversation.messages.length;

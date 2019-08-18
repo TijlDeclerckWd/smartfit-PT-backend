@@ -5,6 +5,46 @@ const {
     sendErr
 } = require('../../utils');
 
+const addNewWeight = async (req, res) => {
+    try {
+        const {userId} = req;
+        const data = { weight: parseFloat(req.body.count.toFixed(1))};
+
+        const updatedStats = await Stats.findOneAndUpdate({client: userId}, {
+           $addToSet: { bodyWeight: data }
+        }, {
+            new: true
+        }).select('bodyWeight');
+
+        const newValue = updatedStats.bodyWeight.pop();
+
+        res.status(200).json({
+            message: 'done',
+            newValue
+        });
+    } catch (err) {
+        sendErr(res, err);
+    }
+};
+
+const deleteWeight = async (req, res) => {
+    try {
+        const weightId = req.params.id;
+
+        const statsDoc = await Stats.findOne({ client: req.userId });
+
+        const index = statsDoc.bodyWeight.findIndex((weight) => weight._id == weightId);
+        statsDoc.bodyWeight.splice(index, 1);
+        await statsDoc.save();
+
+        res.status(200).json({
+            message: 'Successfully removed the weight'
+        })
+    } catch(err) {
+        sendErr(res, err);
+    }
+};
+
 
 const getExerciseRMData = async (req, res) => {
     try {
@@ -36,37 +76,31 @@ const getTotalWorkouts = async (req, res) => {
     } catch(err) {
         sendErr(res, err);
     }
-}
+};
 
 const getWeightStats = async (req, res) => {
     try {
-        const stats = await Stats.findOne({ client: req.userId });
+        const weight = await Stats.findOne({ client: req.userId }).select('bodyWeight');
 
         res.status(200).json({
             message: "succesfully retrieved the weight stats",
-            data: stats.bodyWeight
+            data: weight
         })
     } catch(err) {
         sendErr(res, err);
     }
-}
+};
 
 const saveExerciseData = async (req, res) => {
     try {
         const { workoutId, exerciseNumber, exerciseId } = req.params;
         const data = req.body.data;
 
-        console.log('checkpoint 1 data', data);
-
         const workout = await Workout.findOne({ _id: workoutId });
-
-        console.log('checkpoint 2', workout);
 
         if (!workout) {
             sendErr(res, null, 'There is no such workout');
         }
-
-        console.log('checkpoint 3', workout.exerciseData[parseInt(exerciseNumber, 10) - 1]);
 
         // add the reps to the exercise data in the workout document
         let exerciseData = workout.exerciseData[parseInt(exerciseNumber, 10) - 1];
@@ -75,8 +109,6 @@ const saveExerciseData = async (req, res) => {
 
         // save the edited document
         const updatedWorkout = await workout.save();
-
-        console.log('checkpoint 4', updatedWorkout);
 
         await calculateOneRM(updatedWorkout, exerciseId, req.userId, exerciseData);
         await calculateWeightLifted(exerciseId, req.userId, exerciseNumber, exerciseData);
@@ -92,20 +124,15 @@ const saveExerciseData = async (req, res) => {
 
 const calculateOneRM = async (workout, exerciseId, userId, exerciseData) => {
 //    execute the bryzci formula;
-//     use the rep total of first set as a reference
-    console.log('checkpoint 4.5', exerciseData);
+//     use the rep total of first set as a referenc
 
     const oneRM = Math.round(exerciseData.weight * (36 / (37 - exerciseData.reps[0])));
-
-    console.log('checkpoint 5', oneRM);
 
     const stats = await Stats.findOne({ client: userId });
 
 //     add this oneRM to the stats.oneRMS
     const RMData = { exercise: exerciseId, oneRM };
     stats.oneRMS.push(RMData);
-
-    console.log('checkpoint 6', stats);
 
     // save the document
     await stats.save()
@@ -114,7 +141,6 @@ const calculateOneRM = async (workout, exerciseId, userId, exerciseData) => {
 const calculateWeightLifted = async (exerciseId, userId, exerciseNumber, exerciseData) => {
     const stats = await Stats.findOne({client: userId});
 
-    console.log('checkpoint 7', stats);
 
     // add the data to the stats document
     const convertedReps = exerciseData.reps.map((rep) => parseInt(rep, 10));
@@ -122,7 +148,6 @@ const calculateWeightLifted = async (exerciseId, userId, exerciseNumber, exercis
     const data = { exercise: exerciseId, weight: exerciseData.weight, reps: convertedReps, averageReps };
     stats.weightLiftedPerExercise.push(data);
 
-    console.log('checkpoint 8', stats);
 
     // save the document
     await stats.save();
@@ -132,14 +157,12 @@ const updateMuscleGroupSets = async (exerciseId, userId, data) => {
   const exercise = await Exercise.findOne({ _id: exerciseId});
   const stats = await Stats.findOne({ client: userId });
 
-  console.log('checkpoint 9', stats);
 
   exercise.targetMuscles.forEach( async (muscle) => {
       // we capitalize it because that's the way it is written as property
       const muscleCapitalized = muscle.charAt(0).toUpperCase() + muscle.slice(1);
       // every property that tracks weekly sets will begin with 'weekSets' + the muscle group
       const target = `weekSets${muscleCapitalized}`;
-      console.log('checkpoint 10', target);
       // we want to check whether our date is between the start and end of the week
       const currentTime = moment();
       // we need this index to track the item that we need to update
@@ -154,7 +177,6 @@ const updateMuscleGroupSets = async (exerciseId, userId, data) => {
           }
       });
 
-      console.log('checkpoint 11', matchedIndex);
 
       if (!matchedWeek) {
       //     we create a new week
@@ -166,7 +188,6 @@ const updateMuscleGroupSets = async (exerciseId, userId, data) => {
       }
 
       const endState = await stats.save();
-      console.log('checkpoint 12', endState);
   })
 };
 
@@ -220,10 +241,12 @@ const muscleGroupWeekData = async (req, res) => {
 };
 
 module.exports = {
+    addNewWeight,
+    deleteWeight,
     getExerciseRMData,
     getExerciseVolumeData,
     getTotalWorkouts,
     getWeightStats,
     muscleGroupWeekData,
-saveExerciseData
+    saveExerciseData
 };

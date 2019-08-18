@@ -13,7 +13,7 @@ const StatsSchema = new Schema({
         [ { date: { type: Date }, number: { type: Number }, workout: { type: Schema.Types.ObjectId, ref: 'Workout' }} ]
     ,
     bodyWeight: [
-        { date: { type: String, default: moment().format()}, weight: Number }
+        { date: { type: String, default: moment().toDate()}, weight: Number }
     ],
     weekSetsShoulders: [
         {

@@ -16,6 +16,12 @@ router.use(auth.verifyToken);
 // router.use(auth.isLoggedIn);
 
 
+// add a new weight
+router.post('/addNewWeight', statsController.addNewWeight);
+
+// delete a weight input
+router.delete('/deleteWeight/:id', statsController.deleteWeight);
+
 // get exercise 1RM data
 router.get('/getExerciseRMData/:exerciseId', statsController.getExerciseRMData);
 
